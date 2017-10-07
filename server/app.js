@@ -27,7 +27,7 @@ var dbOptions = {
     connectTimeoutMS: 300000
 };
 
-mongoose.connect('mongodb://localhost/haptos', { useMongoClient: true, promiseLibrary: bluebird });
+mongoose.connect('mongodb://localhost:27017/haptosdb', { useMongoClient: true, promiseLibrary: bluebird });
 
 app.listen(demoPort, function () {
     console.log("app listen on " + demoPort);
