@@ -5,7 +5,7 @@ var UserSchema = new mongoose.Schema({
     username: { type: String, require: true },
     email: { type: String, require: true },
     type: { type: String, enum: ["NORMAL", "OWNER", "ENTREPRENEUR"], default: "NORMAL" },
-    locations: { type: [mongoose.SchemaTypes.ObjectId], default: [] }
+    locations: { type: Array, ref: "Location", default: [] } //Only OWNER CAN HAVE THIS
 });
 
 module.exports = mongoose.model("User", UserSchema);
