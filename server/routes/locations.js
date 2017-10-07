@@ -5,9 +5,27 @@ var mongoose = require("mongoose");
 var _ = require("lodash");
 
 module.exports = function (router) {
-    // router.delete("/locations", function(req, res){
-    //     LocationModel.rem
-    // });
+    router.delete("/locations/:id/suggestions/:sid", function (req, res) {
+        LocationModel.findOne({ "_id": String(req.params.id) }, function (err, location) {
+            if (err || !location) return res.status(500).send(err || "No location");
+
+            var deletedIndex = _.findIndex(location.suggestions, function (suggestion) {
+                return String(req.params.sid) === String(suggestion._id);
+            });
+
+            if (deletedIndex === -1) {
+                return res.status(200).send(location);
+            }
+
+            location.suggestions.splice(deletedIndex, 1);
+
+            location.save(function (err, locationSaved) {
+                if (err) return res.status(500).send(err)
+
+                return res.status(200).send(locationSaved);
+            });
+        });
+    });
 
     router.get("/locations", function (req, res) {
         LocationModel.find({}, function (err, locations) {
@@ -106,7 +124,7 @@ module.exports = function (router) {
 
                     if (existing !== -1) {
                         location.suggestions[existing] = suggestionSaved;
-                        
+
                         location.save(function (err, savedLocation) {
                             if (err) return res.status(500).send(err);
 
@@ -176,4 +194,6 @@ module.exports = function (router) {
         //     }
         // });
     });
+
+
 }
