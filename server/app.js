@@ -7,10 +7,17 @@ var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 var bluebird = require("bluebird");
 var cors = require("cors");
+var path = require("path");
 
 app.use(cors());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use("/api", api);
+app.use("/", express.static(__dirname + "/public/"));
+app.use("/materialize", express.static(__dirname + "/node_modules/materialize-css/dist/"));
+app.use("/angular", express.static(__dirname + "/node_modules/angular/"));
+app.use("/jquery", express.static(__dirname + "/node_modules/jquery/dist/"));
+app.use("/uirouter", express.static(__dirname + "/node_modules/@uirouter/angularjs/release/"));
 
 var dbOptions = {
     useMongoClient: true,
