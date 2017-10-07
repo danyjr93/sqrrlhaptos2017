@@ -14,7 +14,7 @@ var dbOptions = {
     connectTimeoutMS: 300000
 };
 
-mongoose.connect('mongodb://localhost/haptos    ', { useMongoClient: true });
+mongoose.connect('mongodb://localhost/haptos', { useMongoClient: true });
 
 app.listen(demoPort, function () {
     console.log("app listen on " + demoPort);
