@@ -1,8 +1,7 @@
 var mongoose = require("mongoose");
 
 var VoteSchema = new mongoose.Schema({
-    user: { type: mongoose.SchemaTypes.ObjectId },
-    place: { type: mongoose.SchemaTypes.ObjectId },
+    place: { type: mongoose.SchemaTypes.ObjectId, ref: "Place" },
     suggestion: { type: String },
 });
 
