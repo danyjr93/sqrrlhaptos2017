@@ -1,9 +1,17 @@
+var UserModel = require("./../models/user");
+
 module.exports = function (router) {
     router.get("/users", function (req, res) {
-        return res.status(200).send({ message: "users" });
+        UserModel.find({}, function (err, users) {
+            if(err) return res.status(500).send(err);
+            return res.status(200).send(users);
+        })
     });
 
     router.get("/users/:id", function (req, res) {
-        return res.status(200).send({ message: "user " + req.params.id });
+        UserModel.findById(req.params.id, function (err, user) {
+            if(err) return res.status(500).send(err);
+            return res.status(200).send(user);
+        })
     });
 }

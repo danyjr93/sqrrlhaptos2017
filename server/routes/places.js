@@ -1,10 +1,18 @@
+var PlaceModel = require("./../models/place");
+
 module.exports = function (router) {
     router.get("/places", function (req, res) {
-        return res.status(200).send({ message: "places" });
+        PlaceModel.find({}, function (err, result) {
+            if (err) return res.status(500).send(err);
+            return res.status(200).send(result);
+        });
     });
 
     router.get("/places/:id", function (req, res) {
-        return res.status(200).send({ message: "places " + req.params.id });
+        PlaceModel.findById(req.params.id, function (err, result) {
+            if (err) return res.status(500).send(err);
+            return res.status(200).send(result);
+        });
     });
 
     router.get("/places/:id/votes", function (req, res) {
