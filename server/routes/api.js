@@ -1,10 +1,10 @@
 
-const router = require("express").Router();
+var router = require("express").Router();
 
-const index = require("./index")(router);
-const users = require("./users")(router);
-const sites = require("./locations")(router);
-const places = require("./places")(router);
+var index = require("./index")(router);
+var users = require("./users")(router);
+var sites = require("./locations")(router);
+var places = require("./places")(router);
 
 
 module.exports = router;
