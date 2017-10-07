@@ -87,12 +87,37 @@ module.exports = function (router) {
     });
 
 
-    router.post("/locations/:id/suggestions/:suggestionid/votes", function (req, res) {
-        LocationModel.findOne({ "_id": String(req.params.id), "suggestions._id": String(req.params.suggestionid) }, {           
-        }, function (err, doc) {
-            if (err || !doc) return res.status(400).send(err || "no suggestions found");
+    router.post("/locations/:id/suggestions/:sid/votes", function (req, res) {
+        LocationModel.findOne({
+            "_id": String(req.params.id),
+        }, function (err, location) {
+            if (err || !location) return res.status(400).send(err || "no suggestions found");
 
-            return res.status(200).send(doc);
+            SuggestionModel.findOne({ "_id": String(req.params.sid) }, function (err, suggestion) {
+                if (err || !suggestion) return res.status(400).send(err || "no suggestions found");
+
+                suggestion.votes++;
+                suggestion.save(function (err, suggestionSaved) {
+                    if (err) return res.status(500).send(err);
+
+                    var existing = _.findIndex(location.suggestions, function (sugg) {
+                        return String(sugg._id) === String(req.params.sid);
+                    });
+
+                    if (existing !== -1) {
+                        location.suggestions[existing] = suggestionSaved;
+                        
+                        location.save(function (err, savedLocation) {
+                            if (err) return res.status(500).send(err);
+
+                            return res.status(200).send(savedLocation);
+                        });
+                    } else {
+                        return res.status(400).send("No suggestion found");
+                    }
+                });
+            });
+
         });
 
         // LocationModel.findOne({ "_id": req.params.id }, function (err, location) {
@@ -101,23 +126,40 @@ module.exports = function (router) {
         //     if (location.suggestions && location.suggestions.length > 0) {
 
 
-        //         // var existing = _.findIndex(location.suggestions, function (suggestion) {
-        //         //     return String(suggestion._id) === String(req.params.suggestionid);
-        //         // });
+        //         var existing = _.findIndex(location.suggestions, function (suggestion) {
+        //             return String(suggestion._id) === String(req.params.suggestionid);
+        //         });
 
-        //         // if (existing === -1) {
-        //         //     return res.status(400).send("No suggestion registered");
-        //         // }
+        //         if (existing === -1) {
+        //             return res.status(400).send("No suggestion registered");
+        //         }
 
         //         // console.log(location.suggestions[existing].votes);
-        //         // location.suggestions[existing].votes++;
-        //         // console.log(location.suggestions[existing].votes);
+        //         var updatedSuggestion = location.suggestions[existing];
+        //         updatedSuggestion.votes++;
+        //         location.suggestions[existing] = updatedSuggestion;
 
-        //         // location.save(function (err, locationSaved) {
+        //         location.save(function (err, locationSaved) {
+        //             if (err) return res.status(500).send(err);
+
+        //             return res.status(200).send(locationSaved);
+        //         });
+        //         // updatedSuggestion.save(function (err, sg) {
         //         //     if (err) return res.status(500).send(err);
 
-        //         //     return res.status(200).send(locationSaved);
+
+        //         // })
+
+        //         // console.log(location.suggestions[existing].votes);
+        //         // var updatedSuggestion = new SuggestionModel(location.suggestions[existing]);
+        //         // SuggestionModel.isnew = false;
+
+        //         // updatedSuggestion.save(function (err, updatedSuggestion) {
+        //         //     if (err) return res.status(500).send(err);
+
+
         //         // });
+
         //         // var updatedSuggestion = new SuggestionModel({
         //         //     description: String(location.suggestions[existing].description),
         //         //     justification: String(location.suggestions[existing].justification),
