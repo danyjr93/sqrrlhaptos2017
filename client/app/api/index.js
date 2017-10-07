@@ -12,6 +12,10 @@ class Api {
     getLocations(){
       return this.instance.get("locations");
     }
+
+    saveLocaion(location){
+      return this.instance.post("locations", location); 
+    }
 }
 
 export default new Api();

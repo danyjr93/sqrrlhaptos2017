@@ -4,17 +4,18 @@ import { Provider } from 'react-redux';
 import { StackNavigator } from 'react-navigation';
 import store from './store';
 import MainScreen from './screens/MainScreen';
+import SuggestionsScreen from './screens/SuggestionsScreen'; 
 
 export default class App extends React.Component {
   constructor(props){
     super(props);
-    console.log("in app constructor");
-
   }
-  
+
   render() {
     const MainNavigator = StackNavigator({
-      Main: { screen: MainScreen }
+      Main: { screen: MainScreen },
+      Suggestions: { screen: SuggestionsScreen }
+
     });
 
     return (
