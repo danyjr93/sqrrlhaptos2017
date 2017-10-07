@@ -11,8 +11,8 @@ module.exports = function (router) {
 
     router.post("/locations", function (req, res) {
         var location = new LocationModel({
-            x: req.body.x,
-            y: req.body.y
+            latitude: req.body.latitude,
+            longitude: req.body.longitude
         });
 
         location.save(function (err, result) {
