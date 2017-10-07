@@ -6,7 +6,9 @@ const api = require("./routes/api");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const bluebird = require("bluebird");
+const cors = require("cors");
 
+app.use(cors());
 app.use(bodyParser.urlencoded());
 app.use("/api", api);
 

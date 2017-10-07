@@ -10,7 +10,6 @@ module.exports = function (router) {
     });
 
     router.post("/locations", function (req, res) {
-        console.log("req.body", req.body);
         var location = new LocationModel({
             latitude: req.body.latitude,
             longitude: req.body.longitude
